@@ -1,0 +1,1 @@
+.\Erm-tool\Scripts\activate

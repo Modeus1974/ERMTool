@@ -1,0 +1,68 @@
+{% load static %}
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>ERM Data Entry Tool</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  </head>
+  <body>
+    <div class="container">
+    <div class="row justify-content-center">
+    <div class="col-8">
+    <header>
+      <div class="jumbotron text-center">
+        <h1 class="mt-2"><a href="{% url 'home' %}">ERM Data Entry Tool</a></h1>
+        <p>Tool to consolidate qualitative analysis on stocks</p>
+      </div>
+      <div class="container text-center">
+        <h2><a href="{% url 'post_new' %}">[Add a new stock]</a>   <a href="{% url 'summary_posts' %}">[Summary]</a> <a href="{% url 'portfolio_view' %}">[Portfolio Statistics]</a></h2>
+      </div>
+      <div class="container text-right">
+      {% if user.is_authenticated %}
+      <p>Hi {{ user.username }}!</p>
+      <p><a href="{% url 'logout' %}">Log Out</a></p>
+      {% else %}
+      <p>You are not logged in!</p>
+      <a href="{% url 'login' %}">Log In</a>
+      {% endif %}
+      </div>
+    </header>
+
+    <div>
+      {% block content %}
+      {% endblock content %}
+    </div>
+  </div>
+  </div>
+  </div>
+
+  </body>
+</html>
+
+<link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
+    crossorigin="anonymous">
+
+<link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap-theme.min.css"
+    crossorigin="anonymous">
+
+<link rel="stylesheet"
+    href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css"
+     crossorigin="anonymous">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+    crossorigin="anonymous"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"
+    crossorigin="anonymous"></script>
+
+<script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+  crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">

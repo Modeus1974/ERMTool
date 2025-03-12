@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+{% block content %}
+
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Stock</th>
+      <th scope="col">Ticker</th>
+      <th scope="col">Current Price</th>
+      <th scope="col">Target Price</th>
+      <th scope="col">Current Yield</th>
+      <th scope="col">Projected Yield</th>
+      <th scope="col">Business</th>
+      <th scope="col">Pros</th>
+      <th scope="col">Cons</th>
+      <th scope="col">Include</th>
+      <th scope="col">Rationale</th>
+    </tr>
+  </thead>
+ <tbody>
+ {% for post in sorted_posts %}
+    <tr>
+      <th scope="row">{{ post.title }}</th>
+      <td>{{ post.ticker }}</td>
+      <td>${{ post.current_price }}</td>
+      <td>${{ post.target_price }}</td>
+      <td>{{ post.current_yield }}%</td>
+      <td>{{ post.projected_yield }}%</td>
+      <td>{{ post.business }}</td>
+      <td>{{ post.pros }}</td>
+      <td>{{ post.cons }}</td>
+      <td>{{ post.include }}</td>
+      <td>{{ post.rationale }}</td>
+    </tr>
+
+ {% endfor %}
+
+ </tbody>
+</table>
+
+Average Future Yield : {{ future_yield.projected_yield__avg }}%
+{% endblock content %}

@@ -1,0 +1,102 @@
+<html>
+
+<head>
+  <style>
+
+  table, th, td {
+    border: 2px solid black;
+  }
+
+  td {
+        padding: 2px;
+        border-collapse: collapse;
+      }
+
+  th {
+        padding-top: 2px;
+  }
+
+  img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+      }
+
+  .row {
+    border: 2px solid black;
+    padding: 2px;
+  }
+  </style>
+</head>
+
+<div class="post-entry">
+  <div class="post-entry text-center">
+  <h1 style="text-align:center">{{ post.title }}
+    <p>Latest Close: ${{latest_close}}
+    {% if post.include == True %}
+       (Buy)
+    {% else %}
+       (Don't Buy)
+    {% endif %}
+  </h1>
+
+  <table>
+  <tr>
+    <td colspan="2"><b>Overview:</b> <p>{{ post.business }}<br></p></td>
+  </tr>
+  <tr>
+  <td><b>Price During ERM Review:</b> ${{ post.current_price }} </td>
+  <td><b>Analyst Target Price:</b> ${{ post.target_price }}</td>
+  </tr>
+  <tr>
+  <td><b>Dividend Yield During Review:</b> {{ post.current_yield }}% </td>
+  <td><b>Projected Future Yield by Analyst:</b> {{ post.projected_yield }}%</td>
+  </tr>
+  </table>
+  <br>
+
+  </div>
+
+<div style="text-align: center;">
+<img src="data:image/png;base64,{{ graph }}" alt="centered image">
+</div>
+
+<h2><p>Regime Analysis</p></h2>
+{{ regime_data|safe }}
+<br>
+
+<h2><p>Information and Key Statistics:</p></h2>
+{{ stock_summary|safe }}
+<br>
+
+
+<h2><p>Optimal Technical Analysis Strategies:</p></h2>
+<div style="text-align: center;">
+<img src="data:image/png;base64,{{ sma_graph }}" alt="centered image">
+</div>
+
+<div style="text-align: center;">
+<img src="data:image/png;base64,{{ rsi_graph }}" alt="centered image">
+</div>
+
+<div style="text-align: center;">
+<img src="data:image/png;base64,{{ mr_graph }}" alt="centered image">
+</div>
+<br>
+
+<h2><p>Latest Crowdsourced information:</p></h2>
+
+<table>
+<tr>
+  <td><b>Pros: </b><p>{{ post.pros }}</p></td>
+</tr>
+<tr>
+  <td><b>Cons: </b><p>{{ post.cons }}</p></td>
+</tr>
+<tr>
+  <td><b>Rationale for or against a buy: </b><p>{{ post.rationale }}</p></td>
+</tr>
+</table>
+
+</html>
