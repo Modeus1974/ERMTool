@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="post-entry">
+  <div class="post-entry text-center">
+  <h2>{{ post.title }} ( Ticker: {{post.ticker}} ) Latest Close: ${{latest_close}}
+    {% if post.include == True %}
+       ✓
+    {% else %}
+      ✖
+    {% endif %}
+  </h2>
+  <br>
+  </div>
+
+  <div class="container">
+  <div class='col-md-7' style="border:1px solid #cecece;"><p><img src="data:image/png;base64,{{ graph }}" alt=""></p><br></div>
+  <div class='col-md-5' style="border:1px solid #cecece;"><p>{{ stock_summary|safe }}</p><br><p>{{ regime_data|safe }}</p><br></div>
+  </div>
+  <br>
+<!--
+  <div class="container">
+  <div class='col-md-12' style="border:1px solid #cecece;"><p><img src="data:image/png;base64,{{ sma_graph }}" alt=""></p><br></div>
+  </div>
+  <br>
+
+  <div class="container">
+  <div class='col-md-12' style="border:1px solid #cecece;"><p><img src="data:image/png;base64,{{ rsi_graph }}" alt=""></p><br></div>
+  </div>
+  <br>
+
+  <div class="container">
+  <div class='col-md-12' style="border:1px solid #cecece;"><p><img src="data:image/png;base64,{{ mr_graph }}" alt=""></p><br></div>
+  </div>
+  <br>
+-->
+  <div class="container">
+  <div class='row'>
+  <div class='col-md-6' style="border:1px solid #cecece;"><p><b>Current Price:</b> ${{ post.current_price }}</p></div>
+  <div class='col-md-6' style="border:1px solid #cecece;"><p><b>Target Price:</b> ${{ post.target_price }}</p></div>
+  </div>
+  <br>
+  </div>
+  <div class="container">
+  <div class='row'>
+  <div class='col-md-6' style="border:1px solid #cecece;"><p><b>Current Yield:</b> {{ post.current_yield }}%</p></div>
+  <div class='col-md-6' style="border:1px solid #cecece;"><p><b>Projected Yield:</b> {{ post.projected_yield }}%</p></div>
+  </div>
+  </div>
+  <br>
+
+  <div class="container">
+  <div class='col-md-12' style="border:1px solid #cecece;"><p><b>Key Issue: </b><br><br> {{ post.business }}</p><br></div>
+  </div>
+  <br>
+
+  <div class="container">
+  <div class='col-md-12' style="border:1px solid #cecece;"><p><b>Pros: </b><br><br> {{ post.pros }}</p><br></div>
+  </div>
+  <br>
+
+  <div class="container">
+  <div class='col-md-12' style="border:1px solid #cecece;"><p><b>Cons: </b><br><br> {{ post.cons }}</p><br></div>
+  </div>
+  <br>
+
+  <div class="container">
+  <div class='col-md-12' style="border:1px solid #cecece;"><p><b>Rationale: </b><br><br> {{ post.rationale }}</p><br></div>
+  </div>
+  <br>
+
+
+  <br>
+  <p>Created : {{ post.created_at }}</p>
+  <p>Updated : {{ post.updated_at }}</p>
+  </div>
+
+
+</div>
+
+{% if user.is_authenticated %}
+<br/>
+<hr>
+<form action="{% url 'like_post' post.pk %}" method="POST">
+  {% csrf_token %}
+  {% if liked %}
+  <button type="submit" name="post_id" value = "{{ post.id }}">Unvote</button> - {{total_likes}} Likes
+  {% else %}
+  <button type="submit" name="post_id" value = "{{ post.id }}">Vote</button> - {{total_likes}} Likes
+  {% endif %}
+</form>
+
+<p>
+<form method="post" action="{% url 'post_comment_create' post.id %}">
+    {% csrf_token %}
+    {{ comment_form }}
+<input type="submit" value="Submit">
+</form>
+{% endif %}
+
+{% for comment in comments %}
+<p> "{{ comment.text }}" by {{comment.author}}
+({{ comment.updated_at }})
+{% if user == comment.author %}
+<a href="{% url 'post_comment_delete' comment.id %}">Delete</a>
+{% endif %}
+</p>
+{% endfor %}
+
+{% if post.author == user %}
+<a href="{% url 'post_edit' post.pk %}">+ Edit Post Entry</a>
+<p>
+<a href="{% url 'post_delete' post.pk %}">- Delete Post Entry</a>
+{% endif %}
+{% endblock content %}

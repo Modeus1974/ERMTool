@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <h1>Edit Stock Pick</h1>
+  <form action="" method="post">{% csrf_token %}
+    <div class='row'>
+    <div class='col-md-8'>{{ form.title | as_crispy_field }}</div>
+    <div class='col-md-4'>{{ form.ticker | as_crispy_field }}</div>
+    </div>
+    <div class='row'>
+      <div class='col-md-6'>{{ form.current_price | as_crispy_field }}</div>
+      <div class='col-md-6'>{{ form.target_price | as_crispy_field }}</div>
+      <div class='col-md-6'>{{ form.current_yield | as_crispy_field}}</div>
+      <div class='col-md-6'>{{ form.projected_yield | as_crispy_field}}</div>
+    </div>
+    {{ form.business | as_crispy_field}}
+    <div class='row'>
+    <div class='col-md-6'>{{ form.pros | as_crispy_field}}</div>
+    <div class='col-md-6'>{{ form.cons | as_crispy_field}}</div>
+    </div>
+    <div class='row'>
+    <div class='col-md-1'>{{ form.include | as_crispy_field}}</div>
+    <div class='col-md-11'>{{ form.rationale | as_crispy_field}}</div>
+    </div>
+    <input type="submit" value="Update">
+  </form>
+
+<a href="{% url 'all' %}">Back to Main Page</a>
+{% endblock content %}
+
+['title','ticker','current_price','target_price','current_yield','projected_yield','business','pros','cons','include','rationale']
