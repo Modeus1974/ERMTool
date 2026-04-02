@@ -4,7 +4,10 @@
   <style>
 
   table, th, td {
-    border: 2px solid black;
+    border: 1px solid black;
+    font-size: 0.55rem;
+    word-break: break-word;
+    white-space: normal;
   }
 
   td {
@@ -14,6 +17,17 @@
 
   th {
         padding-top: 2px;
+  }
+
+  .table {
+    font-size: 0.55rem;
+    table-layout: fixed;
+    width: 100%;
+    word-break: break-word;
+  }
+
+  .col-md-5 {
+    overflow-x: hidden;
   }
 
   img {
@@ -41,7 +55,7 @@
 <div class="container">
 <div class='col-md-7' style="border:1px solid #cecece;"><p><img src="data:image/png;base64,{{ graph }}" alt=""></p>
 <br>
-<h2>Average Future Yield : {{ future_yield.projected_yield__avg }}%</h2></div>
+<p style="font-size:1rem;">Average Future Yield : {{ future_yield.projected_yield__avg }}%</p></div>
 <div class='col-md-5' style="border:1px solid #cecece;"><p>{{ portfolio_summary|safe }}</p><br><p>{{ regime_data|safe }}</p><br></div>
 </div>
 

@@ -367,29 +367,38 @@ a:hover { text-decoration: none; }
 /* ── Pandas dataframe tables ─────────────────────────────────────── */
 .df-table-wrap { overflow-x: auto; }
 
+.df-table-wrap {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 .df-table-wrap table,
 .df-table-wrap .dataframe {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
-  font-size: .8rem;
+  font-size: .54rem;
   color: #1e293b;
 }
 
 .df-table-wrap th,
 .df-table-wrap td {
-  padding: 5px 10px;
+  padding: 3px 5px;
   text-align: left;
-  border-bottom: 1px solid #f1f5f9;
-  white-space: nowrap;
+  border-bottom: 1px solid #cbd5e1;
+  white-space: normal;
+  word-break: break-word;
+  overflow: hidden;
 }
 
 .df-table-wrap th {
   background: #f8fafc;
   font-weight: 600;
   color: #475569;
-  font-size: .75rem;
+  font-size: .54rem;
   text-transform: uppercase;
-  letter-spacing: .4px;
+  letter-spacing: .3px;
+  border-bottom: 1px solid #cbd5e1;
 }
 
 .df-table-wrap tr:last-child td { border-bottom: none; }

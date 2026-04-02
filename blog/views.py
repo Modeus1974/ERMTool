@@ -35,8 +35,9 @@ def return_regime(stock):
       plt,df = return_regime_graph(stock)
 
     fig = plt.gcf()
+    fig.tight_layout()
     buf = io.BytesIO()
-    fig.savefig(buf, format='png')
+    fig.savefig(buf, format='png', bbox_inches='tight')
     buf.seek(0)
     string = base64.b64encode(buf.read())
     data = urllib.parse.quote(string)

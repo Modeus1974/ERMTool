@@ -24,6 +24,7 @@ sns.set()
 plt.rcParams['axes.labelsize'] = 20
 plt.rcParams['xtick.labelsize'] = 16
 plt.rcParams['ytick.labelsize'] = 16
+plt.rcParams['font.family'] = 'DejaVu Sans'
 
 def build_stock_prices_dataframe(stocklist,lookback_in_years,monthly=False):
       today = date.today()
@@ -197,7 +198,7 @@ def plot_regime_color(dataset, regime_num=0, TR_num=1, lambda_value=16, log_TR =
     y_max = np.max(TR) + 500
 
     if log_TR:
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(12, 10))
         for i in range(len(regimelist)-1):
             if curr_reg == 1:
                 ax.axhspan(0, y_max+500, xmin=regimelist[i]/regimelist[-1], xmax=regimelist[i+1]/regimelist[-1],
@@ -464,7 +465,7 @@ def plot_regime_color_new(dataset, regime_num=0, TR_num=1, lambda_value=16, log_
     state = []
 
     if log_TR:
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(12, 10))
         for i in range(len(regimelist)-1):
             if curr_reg == 1:
                 ax.axhspan(0, y_max, xmin=regimelist[i]/regimelist[-1], xmax=regimelist[i+1]/regimelist[-1],
@@ -480,13 +481,13 @@ def plot_regime_color_new(dataset, regime_num=0, TR_num=1, lambda_value=16, log_
         #plt.plot(TR, label='Total Return)
         #plt.plot(betas_df,color="black",label='Fitted Series')
         plt.plot(TR)
-        plt.ylabel(f'{label}',fontsize=12)
-        plt.xticks(rotation=30,fontsize=12)
-        plt.yticks(fontsize=12)
+        plt.ylabel(f'{label}')
+        plt.xticks(rotation=30)
+        plt.yticks()
         plt.xlabel('Year')
         #plt.yscale('log')
         plt.xlim([dataset.index[0], dataset.index[-1]])
-        plt.title(f'Regime Plot of {label} values', fontsize=12)
+        plt.title(f'Regime Plot of {label} values', fontsize=40)
         plt.legend(loc='upper right')
     dataset["State"] = state
     return plt
