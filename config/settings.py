@@ -29,7 +29,7 @@ SECRET_KEY = 'abcd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.ngrok.io','.herokuapp.com','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['.ngrok.io','.herokuapp.com','localhost','127.0.0.1','.pythonanywhere.com']
 
 
 # Application definition
@@ -136,7 +136,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [str(BASE_DIR.joinpath('static'))]
+STATICFILES_DIRS = [str(BASE_DIR.joinpath('static'))] if BASE_DIR.joinpath('static').exists() else []
 STATIC_ROOT = str(BASE_DIR.joinpath('staticfiles'))
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
