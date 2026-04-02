@@ -211,6 +211,8 @@ class CommentDeleteView(DeleteView):
         post = self.object.post
         return reverse('post_detail', args=[post.id])
 
+import json
+from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.db.utils import IntegrityError
@@ -223,7 +225,7 @@ class AddVoteView(LoginRequiredMixin, View):
         vote = Vote(author=request.user, post=t)
         try:
             vote.save()  # In case of duplicate key
-        except IntegrityError as e:
+        except IntegrityError:
             pass
         return HttpResponse()
 
@@ -234,9 +236,50 @@ class DeleteVoteView(LoginRequiredMixin, View):
         t = get_object_or_404(Post, id=pk)
         try:
             vote = Vote.objects.get(author=request.user, post=t).delete()
-        except Vote.DoesNotExist as e:
+        except Vote.DoesNotExist:
             pass
         return HttpResponse()
+
+
+def generate_business_summary(request):
+    ticker = request.GET.get('ticker', '').strip()
+    if not ticker:
+        return HttpResponse(json.dumps({'error': 'No ticker provided'}), content_type='application/json', status=400)
+    try:
+        # Fetch the long business description directly from yfinance
+        info = yf.Ticker(ticker).info
+        long_description = info.get('longBusinessSummary', '')
+        if not long_description:
+            return HttpResponse(json.dumps({'error': f'No business description found for {ticker} on Yahoo Finance.'}), content_type='application/json', status=404)
+
+        import anthropic
+        client = anthropic.Anthropic(api_key=settings.ANTHROPIC_API_KEY)
+        message = client.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=100,
+            messages=[{
+                "role": "user",
+                "content": (
+                    f"Summarise the following company description into a single concise sentence. "
+                    f"Return only the sentence, no preamble.\n\n{long_description}"
+                )
+            }]
+        )
+        summary = message.content[0].text.strip()
+
+        company_name = info.get('longName') or info.get('shortName')
+        current_price = info.get('currentPrice') or info.get('regularMarketPrice')
+        dividend_yield = info.get('dividendYield')
+        current_yield = round(dividend_yield, 2) if dividend_yield else None
+
+        return HttpResponse(json.dumps({
+            'summary': summary,
+            'company_name': company_name,
+            'current_price': current_price,
+            'current_yield': current_yield,
+        }), content_type='application/json')
+    except Exception as e:
+        return HttpResponse(json.dumps({'error': str(e)}), content_type='application/json', status=500)
 
 
 #importing get_template from loader

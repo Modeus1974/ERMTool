@@ -142,3 +142,5 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+ANTHROPIC_API_KEY = env.str("ANTHROPIC_API_KEY", default="")

@@ -15,6 +15,10 @@
       <div class='col-md-6'>{{ form.projected_yield | as_crispy_field}}</div>
     </div>
     {{ form.business | as_crispy_field}}
+    <button type="button" id="generate-btn" style="margin-top:-10px; margin-bottom:16px;">
+      ✦ Generate summary from ticker
+    </button>
+    <span id="generate-status" style="margin-left:10px; font-size:0.85em; color:#64748b;"></span>
     <div class='row'>
     <div class='col-md-6'>{{ form.pros | as_crispy_field}}</div>
     <div class='col-md-6'>{{ form.cons | as_crispy_field}}</div>
@@ -27,6 +31,34 @@
   </form>
 
 <a href="{% url 'all' %}">Back to Main Page</a>
+
+<script>
+document.getElementById('generate-btn').addEventListener('click', function() {
+  var ticker = document.getElementById('id_ticker').value.trim();
+  var status = document.getElementById('generate-status');
+  if (!ticker) { status.textContent = 'Enter a ticker first.'; return; }
+  this.disabled = true;
+  status.textContent = 'Generating…';
+  fetch('/api/generate-business-summary?ticker=' + encodeURIComponent(ticker))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.summary) {
+        document.getElementById('id_business').value = data.summary;
+        if (data.company_name) document.getElementById('id_title').value = data.company_name;
+        if (data.current_price != null) document.getElementById('id_current_price').value = data.current_price;
+        if (data.current_yield != null) document.getElementById('id_current_yield').value = data.current_yield;
+        status.textContent = 'Done.';
+      } else {
+        status.textContent = 'Error: ' + (data.error || 'unknown');
+      }
+      document.getElementById('generate-btn').disabled = false;
+    })
+    .catch(function(e) {
+      status.textContent = 'Request failed.';
+      document.getElementById('generate-btn').disabled = false;
+    });
+});
+</script>
 {% endblock content %}
 
 ['title','ticker','current_price','target_price','current_yield','projected_yield','business','pros','cons','include','rationale']

@@ -3,31 +3,34 @@
 {% block content %}
   {% for post in object_list %}
     <div class="post-entry">
-      <h3><a href='{% url 'post_detail' post.pk %}'>{{ post.title }}</a> ( {{ post.ticker }} )
-        
-        {% if post.include == True %}
-         ✓
-      {% else %}
-         ✖
-      {% endif %}
+      <h3>
+        <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
+        <span class="ticker-badge">{{ post.ticker }}</span>
+        {% if post.include %}
+          <span class="status-include" title="Included in portfolio">&#10003;</span>
+        {% else %}
+          <span class="status-exclude" title="Not included">&#10007;</span>
+        {% endif %}
       </h3>
 
       <h4><p>{{ post.business }}</p></h4>
 
       {% if post.author == user or user.is_superuser %}
-        <h5>(<a href="{% url 'post_edit' post.id %}">Edit</a> |
-        <a href="{% url 'post_delete' post.id %}">Delete</a>)</h5>
+        <h5>
+          <a href="{% url 'post_edit' post.id %}"><i class="fas fa-pencil-alt"></i> Edit</a> &nbsp;|&nbsp;
+          <a href="{% url 'post_delete' post.id %}"><i class="fas fa-trash-alt"></i> Delete</a>
+        </h5>
       {% endif %}
 
       {% if user.is_authenticated %}
-      <form action="{% url 'like_home_post' post.pk %}" method="POST">
-        {% csrf_token %}
-        <button type="submit"  name="post_id" value = "{{ post.id }}">Vote</button> - {{post.total_likes}} Likes
-      </form>
+        <form action="{% url 'like_home_post' post.pk %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" name="post_id" value="{{ post.id }}">
+            <i class="fas fa-thumbs-up"></i> Vote
+          </button>
+          &nbsp;<span style="font-size:.85rem;color:#64748b;">{{ post.total_likes }} likes</span>
+        </form>
       {% endif %}
-
-      
     </div>
   {% endfor %}
-
 {% endblock content %}
