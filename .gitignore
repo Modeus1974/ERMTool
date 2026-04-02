@@ -20,7 +20,7 @@ db.sqlite3
 *.log
 media/
 staticfiles/
-static/
+/static/
 local_settings.py
 
 # OS
